@@ -1,3 +1,4 @@
+// Package crypto provides basic cryptographic routines.
 package crypto
 
 import "golang.org/x/crypto/scrypt"
