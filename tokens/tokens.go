@@ -4,6 +4,9 @@
 //
 // Sizes of the tokens are from Thomas Ptacek's gist:
 // https://gist.github.com/tqbf/be58d2d39690c3b366ad
+//
+// To use the tokens with the gogo/protobuf library, build this with the build
+// tag "-protobuf"
 package tokens
 
 import (
