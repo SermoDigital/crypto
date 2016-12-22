@@ -1,4 +1,5 @@
 // +build protobuf
+
 package tokens
 
 import (
