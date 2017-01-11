@@ -26,15 +26,12 @@ func Cookie(t tokens.AuthToken) *http.Cookie {
 	return &http.Cookie{Name: CookieName, Value: string(t[:])}
 }
 
-// Retrieve fetches the Token from the http.Request, if it exists.
+// Retrieve fetches the Token from the X-XSRF-TOKEN header, if it exists.
 func Retrieve(r *http.Request) (t tokens.AuthToken, err error) {
-	c, err := r.Cookie(CookieName)
-	if err != nil {
-		return t, err
+	val := r.Header.Get("X-" + CookieName)
+	if len(val) != len(t) {
+		return t, errors.New("X-" + CookieName + " header is an incorrect length")
 	}
-	if len(c.Value) != len(t) {
-		return t, errors.New(CookieName + " cookie's value is an incorrect length")
-	}
-	copy(t[:], c.Value)
+	copy(t[:], val)
 	return t, nil
 }
