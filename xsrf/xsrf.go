@@ -15,8 +15,8 @@ import (
 const CookieName = "XSRF-TOKEN"
 
 // Hash returns the SHAKE-256 hash of the token. Hash should be used when
-// storing the XSRF token on the backend and hash comparisons should use a
-// constant-time comparison function, like those found in crypto/subtle.
+// storing the XSRF token on the backend and comparisons should be done in
+// constant-time function, using a function like those found in crypto/subtle.
 func Hash(t tokens.AuthToken) []byte {
 	return crypto.Shake256(t[:])
 }

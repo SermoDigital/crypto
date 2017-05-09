@@ -73,7 +73,7 @@ func NewSalt() Salt {
 }
 
 // RandomPassword generates a cryptographically-secure slice of bytes suitable
-// for use as a password. The slice may contain null bytes.
+// for use as a password.
 func RandomPassword() []byte {
 	var buf [randPasswordSizeBytes]byte
 	mustFill(buf[:])
@@ -92,7 +92,7 @@ func NewURLToken() []byte {
 // SessionID is a base-64 encoded array used to identify a particular session.
 type SessionID [SessionIDLength]byte
 
-// NewSessionID creates a cryptographically-secure SessionID.
+// NewSessionID creates a cryptographically-secure session identifier.
 func NewSessionID() SessionID {
 	var buf [sessionIDSizeBytes]byte
 	var sid SessionID

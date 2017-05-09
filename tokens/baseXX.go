@@ -15,5 +15,5 @@ func Base64Encode(b []byte) []byte {
 func Base64Decode(b []byte) ([]byte, error) {
 	dec := make([]byte, base64.URLEncoding.EncodedLen(len(b)))
 	n, err := base64.URLEncoding.Decode(dec, b)
-	return dec[n:], err
+	return dec[:n], err
 }
