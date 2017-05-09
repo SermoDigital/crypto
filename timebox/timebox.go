@@ -8,14 +8,8 @@ import (
 	"golang.org/x/crypto/nacl/secretbox"
 )
 
-// Seal encrypts data the time-sensitive using nacl/secretbox.
-func Seal(data []byte, expires time.Time, key *[32]byte) ([]byte, error) {
-	var nonce [24]byte
-	_, err := rand.Read(nonce[:])
-	if err != nil {
-		return nil, err
-	}
-
+// SealWith encrypts data the time-sensitive using nacl/secretbox.
+func SealWith(data []byte, expires time.Time, nonce *[24]byte, key *[32]byte) ([]byte, error) {
 	tb, err := expires.MarshalBinary()
 	if err != nil {
 		return nil, err
@@ -40,7 +34,17 @@ func Seal(data []byte, expires time.Time, key *[32]byte) ([]byte, error) {
 	copy(out[1:], tb)
 	copy(out[1+len(tb):], nonce[:])
 
-	return secretbox.Seal(out, data, &nonce, key), nil
+	return secretbox.Seal(out, data, nonce, key), nil
+}
+
+// Seal is shorthand for calling SealWith with a nonce read via rand.Read.
+func Seal(data []byte, expires time.Time, key *[32]byte) ([]byte, error) {
+	var nonce [24]byte
+	_, err := rand.Read(nonce[:])
+	if err != nil {
+		return nil, err
+	}
+	return SealWith(data, expires, &nonce, key)
 }
 
 // Open is shorthand for calling OpenAt with time.Now as its first argument.
