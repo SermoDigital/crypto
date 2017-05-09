@@ -1,3 +1,4 @@
+// Timebox is a thin wrapper around nacl/secretbox for time-based secrets.
 package timebox
 
 import (
@@ -7,6 +8,7 @@ import (
 	"golang.org/x/crypto/nacl/secretbox"
 )
 
+// Seal encrypts data the time-sensitive using nacl/secretbox.
 func Seal(data []byte, expires time.Time, key *[32]byte) ([]byte, error) {
 	var nonce [24]byte
 	_, err := rand.Read(nonce[:])
@@ -41,10 +43,13 @@ func Seal(data []byte, expires time.Time, key *[32]byte) ([]byte, error) {
 	return secretbox.Seal(out, data, &nonce, key), nil
 }
 
+// Open is shorthand for calling OpenAt with time.Now as its first argument.
 func Open(data []byte, key *[32]byte) ([]byte, bool) {
 	return OpenAt(time.Now(), data, key)
 }
 
+// OpenAt attempts to unseal the sealed data, returning false if the data has
+// expired.
 func OpenAt(when time.Time, data []byte, key *[32]byte) (out []byte, ok bool) {
 	end := int(data[0]) + 1
 
